@@ -1,11 +1,14 @@
 %% Calculate the optimal energy consumption results on the test set using a simple model (SAL).
 
 data_set_names = ["cement", "steelpowder", "steelmaking"];
+if ~exist("DATA_ROOT", "var")
+    DATA_ROOT = fileparts(mfilename("fullpath"));
+end
 for name_idx = 1:3
 
     data_set_name = data_set_names(name_idx);
     % Load data: prices and electricity meter data for past time periods
-    load("data_set/dataset_" + data_set_name + ".mat");
+    load(fullfile(DATA_ROOT, "data_set", "dataset_" + data_set_name + ".mat"));
 
     % Input: electricity prices, problem parameters (already input in the upper-level function)
     % Output: optimal energy consumption
@@ -37,6 +40,7 @@ for name_idx = 1:3
 
     end
 
-    save("results/data_rc_" + data_set_name + "_SALs.mat", "E_reduced_constraints");
+    save(fullfile(DATA_ROOT, "results", ...
+        "data_rc_" + data_set_name + "_SALs.mat"), "E_reduced_constraints");
 
 end

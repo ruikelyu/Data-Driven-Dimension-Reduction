@@ -6,13 +6,22 @@
 % data_set_name = "steelmaking";
 
 % Load data: prices and electricity meter data for past time periods
-load("data_set/dataset_" + data_set_name + ".mat");
+if ~exist("DATA_ROOT", "var")
+    DATA_ROOT = fileparts(mfilename("fullpath"));
+end
+load(fullfile(DATA_ROOT, "data_set", "dataset_" + data_set_name + ".mat"));
 % Size of the training set
 data_set.NOFTRAIN = 21;
 % Solution settings
-TimeLimit = 120; % Maximum solving time per iteration
+if ~exist("TIME_LIMIT", "var")
+    TIME_LIMIT = 120;
+end
+TimeLimit = TIME_LIMIT; % Maximum solving time per iteration
 % Maximum number of iterations
-max_itr = 40;
+if ~exist("MAX_ITERATIONS", "var")
+    MAX_ITERATIONS = 40;
+end
+max_itr = MAX_ITERATIONS;
 % Length of time interval
 delta_t = 1;
 % Number of intervals
@@ -74,7 +83,8 @@ for NOFMODELS = 1:3
             end
         end
 
-        save("results/data_" + data_set_name + NOFMODELS + "ALs_" + BATCH_SIZE + "batch.mat", "result");
+        save(fullfile(DATA_ROOT, "results", ...
+            "data_" + data_set_name + NOFMODELS + "ALs_" + BATCH_SIZE + "batch.mat"), "result");
 
     end
 

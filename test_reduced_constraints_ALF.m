@@ -1,9 +1,12 @@
 %% Calculate the optimal energy consumption results on the test set using the identified parameters for the ALF model.
 
 for data_set_name = ["cement", "steelpowder", "steelmaking"]
+    if ~exist("DATA_ROOT", "var")
+        DATA_ROOT = fileparts(mfilename("fullpath"));
+    end
 
     % Load data: prices and electricity meter data for past time periods
-    load("data_set/dataset_" + data_set_name + ".mat");
+    load(fullfile(DATA_ROOT, "data_set", "dataset_" + data_set_name + ".mat"));
 
     % Generate bidding results using the fitted model
 
@@ -18,7 +21,8 @@ for data_set_name = ["cement", "steelpowder", "steelmaking"]
         for BATCH_SIZE = 1 : 4
 
             % Load parameters of the trained model
-            load("results/data_" + data_set_name + NOFMODELS + "ALs_" + BATCH_SIZE + "batch.mat", "result");
+            load(fullfile(DATA_ROOT, "results", ...
+                "data_" + data_set_name + NOFMODELS + "ALs_" + BATCH_SIZE + "batch.mat"), "result");
 
             % Problem parameters
             P_max_i_val = result.P_max_i(end, :); % Aggregated power upper limit
@@ -40,7 +44,8 @@ for data_set_name = ["cement", "steelpowder", "steelmaking"]
 
             end
 
-            save("results/data_rc_" + data_set_name + NOFMODELS + "ALs.mat", "E_reduced_constraints");
+            save(fullfile(DATA_ROOT, "results", ...
+                "data_rc_" + data_set_name + NOFMODELS + "ALs.mat"), "E_reduced_constraints");
 
         end
 
