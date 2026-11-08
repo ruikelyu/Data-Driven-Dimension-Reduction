@@ -59,13 +59,43 @@ Contains the reproduced OVB methods. Please refer to the documentation inside fo
    - Tests the performance and effectiveness of the Optimal Virtual Battery (OVB) model
 
 ## Getting Started
-1. Ensure all dependencies are installed:
-   - Gurobi
-   - YALMIP
-2. Place your data in the `data_set` folder
-3. Run `main_training.m` to begin the training process
-4. View results in the `results` folder
-5. Use visualization tools to analyze outputs
+Install MATLAB, [YALMIP](https://yalmip.github.io/), and Gurobi with its
+MATLAB interface and a valid license. Users do not need to enter any
+subfolder. From the repository root, run:
+
+```matlab
+cd('path/to/Data-Driven-Dimension-Reduction')
+setup_project
+check_installation
+results = run_training;
+```
+
+`setup_project` adds the repository and all model/data folders to the MATLAB
+path. `check_installation` reports missing dependencies before a long solve.
+`run_training` runs the full training pipeline and writes outputs to `results/`.
+For a quick installation check, run the short demo:
+
+```matlab
+results = run_demo;
+```
+
+The default pipeline can be computationally expensive; use a shorter smoke run
+while verifying your installation:
+
+```matlab
+results = run_training("TimeLimit", 10, "MaxIterations", 1);
+```
+
+After training, run the root-level validation scripts without changing folders:
+
+```matlab
+run('test_reduced_constraints_ALF.m')
+run('test_reduced_constraints_SLF.m')
+```
+
+The scripts can also be run directly after `setup_project`; their data and
+result paths are resolved from the repository root rather than the current
+MATLAB folder.
 
 ## Frequently Asked Questions (FAQ)
 
